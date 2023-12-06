@@ -19,6 +19,12 @@ function App() {
 
   const Wrapper = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
+
+  const Emoji = styled.span`
+  font-size: 36px;
   `;
 
   const Box = styled.div`
@@ -29,18 +35,15 @@ function App() {
     justify-content: center;
     align-items: center;
     animation: ${rotateAnimation} 1s linear infinite;
-    span {
-      font-size: 36px;
-      &:hover {font-size: 48px;}
-      &:active {opacity: 0;}
-    }
+    ${Emoji}:hover {font-size: 98px;}
   `;
 
   return (
     <Wrapper>
       <Box>
-        <span>😊</span>
+        <Emoji>😊</Emoji>
       </Box>
+      <Emoji>🔥</Emoji>
     </Wrapper>
   );
 }
