@@ -1,30 +1,31 @@
 import styled from 'styled-components';
 
-interface CircleProps {
-	bgColor: string;
+interface ContainerProps {
+  bgColor: string;
+  borderColor: string;
 }
 
-const Container = styled.div<CircleProps>`
-	width: 200px;
-	height: 200px;
-	background-color: ${(props) => props.bgColor};
-	border-radius: 50%;
+const Container = styled.div<ContainerProps>`
+  width: 200px;
+  height: 200px;
+  background-color: ${(props) => props.bgColor};
+  border-radius: 50%;
+  border: 1px solid ${(props) => props.borderColor};
 `;
 
-function Circle({ bgColor }:CircleProps) {
-	return (
-		<Container bgColor={bgColor} />
-	)
+interface CircleProps {
+  bgColor: string;
+  borderColor?: string; // property?: Optiooanl Props
+  text?: string;
 }
 
-interface PlayerShape {
-	name: string;
-	age: number;
+function Circle({ bgColor, borderColor, text = 'defalut text' }: CircleProps) {
+  return (
+    // borderColor={borderColor ?? default값}
+    <Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
+      {text}
+    </Container>
+  );
 }
-
-const sayHello = (playerObj:PlayerShape) => `Hello ${playerObj.name} you are ${playerObj.age} years old.`;
-
-sayHello({name: 'gil-dong', age: 15});
-// sayHello({name: 'gil-dong', age: '12'});	// Type error
 
 export default Circle;
