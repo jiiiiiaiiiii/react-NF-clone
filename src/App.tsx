@@ -1,32 +1,18 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 
 function App() {
-  const [value, setValue] = useState('');
-
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // const value = e.currentTarget.value; // 아래와 같은 코드
-    const { currentTarget: {value} } = e;
-    setValue(value);
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('hello', value);
-    
-  };
+const Container = styled.div`
+  background-color: ${props => props.theme.bgColor};
+`;
+const H1 = styled.h1`
+  color: ${props => props.theme.textColor};
+`;
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
-          value={value}
-          onChange={onChange}
-          type='text'
-          placeholder='username'
-        />
-        <button>Log in</button>
-      </form>
-    </div>
+    <Container>
+      <H1>protected</H1>
+    </Container>
   );
 }
 
