@@ -6,6 +6,7 @@ import About from './screens/About';
 import Root from './Root';
 import NotFound from './screens/NotFound';
 import ErrorComponent from './components/ErrorComponent';
+import User from './screens/users/User';
 
 // Router를 Array 형식으로 표현(-> JS Object 형식)
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
 				path: 'about',
 				element: <About />
 			},
+			{
+				path:'users/:userId',
+				element: <User />
+			}
 		],
 		errorElement: <NotFound />
 	}
