@@ -10,7 +10,9 @@ export default function User() {
 			<h1>User with id {userId} is named: {users[Number(userId)-1].name}</h1>
 			<hr />
 			<Link to='followers'>See followers</Link>
-			<Outlet />
+			<Outlet context={{	// sent to 모든 'children' 
+				nameOfMyUser: users[Number(userId)-1].name,
+				}} />
 		</div>
 	)
 }
