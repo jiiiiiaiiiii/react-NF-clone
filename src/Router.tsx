@@ -1,17 +1,15 @@
 import React from 'react';
 import { Routes, Route, createBrowserRouter } from 'react-router-dom';
-import Header from './components/Header';
+import Root from './Root';
 import Home from './screens/Home';
 import About from './screens/About';
-import Root from './Root';
 import NotFound from './screens/NotFound';
 import ErrorComponent from './components/ErrorComponent';
 import User from './screens/users/User';
+import Followers from './screens/users/Followers';
 
-// Router를 Array 형식으로 표현(-> JS Object 형식)
-const router = createBrowserRouter([
+const Router = createBrowserRouter([
 	{
-		// 첫페이지 = 전체 Router들의 container
 		path: '/',
 		element: <Root />,
 		children: [
@@ -26,11 +24,17 @@ const router = createBrowserRouter([
 			},
 			{
 				path:'users/:userId',
-				element: <User />
+				element: <User />,
+				children: [
+					{
+						path: 'followers',
+						element: <Followers />
+					}
+				]
 			}
 		],
 		errorElement: <NotFound />
 	}
 ]);
 
-export default router;
+export default Router;
