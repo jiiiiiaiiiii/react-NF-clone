@@ -1,12 +1,19 @@
 import styled from 'styled-components';
-import { motion, useMotionValue, useMotionValueEvent, useTransform } from 'framer-motion';
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useTransform,
+  useScroll
+} from 'framer-motion';
 
-const Wrapper = styled.div`
-  height: 100vh;
+const Wrapper = styled(motion.div)`
+  height: 200vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, rgb(238, 0, 153), rgb(221, 0, 238));
 `;
 
 const Box = styled(motion.div)`
@@ -19,22 +26,32 @@ const Box = styled(motion.div)`
 
 function App() {
   const x = useMotionValue(0);
-  // useTransform(추척값, [input Array], [output Array])
-  // input과 output은 같은 배열 크기를 가져야 함
-  // ex: x가 800이면 2를 return
-  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]);
-  
-  // useMotionValueEvent(x, 'change', (xValue) => {
-  //   console.log(xValue);
-  // });
+  const rotateZ = useTransform(x, [-800, 800], [-360, 360]);
+  const gradient = useTransform(
+    x,
+    [-800, 0, 800],
+    [
+      'linear-gradient(135deg,rgb(0, 210, 238),rgb(0,83,238))',
+      'linear-gradient(135deg,rgb(238, 0, 153),rgb(221, 0, 238))',
+      'linear-gradient(135deg,rgb(0, 238, 155),rgb(238, 178, 0))',
+    ]
+  );
 
-  useMotionValueEvent(scale, 'change', (xValue) => {
-    console.log(xValue);
+  // scrollY: 스크롤한 픽셀 수, scrollYProgress: 0 ~ 1(페이지 진행도)
+  const {scrollY, scrollYProgress} = useScroll(); 
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
+
+  useMotionValueEvent(scrollY, 'change', (yValue) => {
+    console.log('scrollY', yValue);
+  });
+
+  useMotionValueEvent(scrollYProgress, 'change', (scrollyValue) => {
+    console.log('scrollYProgress', scrollyValue);
   });
 
   return (
-    <Wrapper>
-      <Box style={{ x, scale }}  drag='x' dragSnapToOrigin />
+    <Wrapper style={{ background: gradient }}>
+      <Box style={{ x, rotateZ, scale }} drag='x' dragSnapToOrigin />
     </Wrapper>
   );
 }
