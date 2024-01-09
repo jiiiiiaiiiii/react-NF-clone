@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  motion,
-  AnimatePresence
-} from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
 const Wrapper = styled(motion.div)`
@@ -12,6 +9,7 @@ const Wrapper = styled(motion.div)`
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, rgb(238, 0, 153), rgb(221, 0, 238));
+  flex-direction: column;
 `;
 
 const Box = styled(motion.div)`
@@ -20,47 +18,67 @@ const Box = styled(motion.div)`
   background-color: rgba(255, 255, 255, 1);
   border-radius: 40px;
   position: absolute;
-  top: 100px;
+  top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const boxVariants = {
-  initial: {
-    opacity: 0,
-    scale: 0
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotateZ: 360,
-  },
-  leaving: {
+const boxVar = {
+  entry: (isBack: boolean) => ({
+    x: isBack ? -500 : 500,
     opacity: 0,
     scale: 0,
-    y: 50,
-  },
-}
+  }),
+  center: (isBack: boolean) => ({
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 1 },
+  }),
+  exit: (isBack: boolean) => ({
+    x: isBack ? 500 : -500,
+    opacity: 0,
+    scale: 0,
+    transition: { duration: 1 },
+  }),
+};
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const toggleShowing = () => {
-    setShowing(prev => !prev);
-  }
+  const [visible, setVisible] = useState(1);
+  const [back, setBack] = useState(false);
+
+  const nextPage = () => {
+    setBack(false);
+    setVisible((prev) => (prev === 10 ? 10 : prev + 1));
+  };
+  const prevPage = () => {
+    setBack(true);
+    setVisible((prev) => (prev === 1 ? 1 : prev - 1));
+  };
 
   return (
     <Wrapper>
-      <button onClick={toggleShowing}>Click</button>
-      <AnimatePresence>
-        {showing 
-        ? <Box 
-            variants={boxVariants} 
-            initial='initial'   // 초기상태
-            animate='visible'   // 초기 -> 등장
-            exit='leaving' />   // exit: element가 '사라질 때'의 animtaion
-        : null}
+      {/* <AnimatePresence mode="wait" custom={back}>
+      // ✨mode="wait": exit이 끝난 '후'에 initial 실행 */} 
+      <AnimatePresence custom={back}>
+        <Box
+          custom={back}
+          variants={boxVar}
+          initial='entry'
+          animate='center'
+          exit='exit'
+          key={visible}
+        >
+          {visible}
+        </Box>
       </AnimatePresence>
+      <button onClick={prevPage}>prev</button>
+      <button onClick={nextPage}>next</button>
     </Wrapper>
-  );   
+  );
 }
 
 export default App;
